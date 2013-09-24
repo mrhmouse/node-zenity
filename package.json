@@ -1,0 +1,26 @@
+{
+  "name": "zenity",
+  "version": "0.0.0",
+  "description": "A wrapper for the wonderful Zenity GTK+ dialog framework.",
+  "main": "app.js",
+  "scripts": {
+    "test": "which zenity && echo 'zenity is installed property' || echo 'You must install zenity to use node-zenity'"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/mrhmouse/node-zenity.git"
+  },
+  "keywords": [
+    "zenity",
+    "gtk",
+    "dialog",
+    "gui",
+    "graphical",
+    "interface"
+  ],
+  "author": "Jordan Brown",
+  "license": "BSD-2-Clause",
+  "bugs": {
+    "url": "https://github.com/mrhmouse/node-zenity/issues"
+  }
+}
