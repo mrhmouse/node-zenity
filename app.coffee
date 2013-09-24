@@ -15,7 +15,6 @@ bind = ( name, map, handler ) -> ( o, callback ) ->
 				opts.push getter o[key]
 	else unless typeof callback is 'function'
 		callback = o
-	console.log "Calling zenity --#{ name } #{ opts.join ' ' }"
 	run "--#{ name }", opts, ( error, stdout ) ->
 		throw error if error?
 		if handler? and callback?
