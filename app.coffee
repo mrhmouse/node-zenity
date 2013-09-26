@@ -38,79 +38,88 @@ status = ( code ) ->
 	cancel: code is 1
 	timeout: code is 5
 	success: code is 0
+	error: code not in [ 0, 1, 5 ]
 
 # Pass only the status to a callback
 statusOnly = ( status, stdout, cb ) -> cb status
 
+# Do some transformation on the output and pass it on
+transform = ( f ) -> ( status, stdout, cb ) -> cb status, f stdout
+
 # Pass arguments unchanged to a callback
-passThrough = ( status, stdout, cb ) -> cb status, stdout
+passThrough = transform ( v ) -> v
+
+# Wrap a commandline argument and pass as an option
+option = ( name ) -> ( v ) -> "--#{ name }=#{ fix v }"
+
+# A commandline flag (no argument)
+flag = ( name ) -> "--#{ name }"
 
 Zenity.calendar = bind 'calendar',
-	text: ( v ) -> "--text=#{ fix v }"
-	day: ( v ) -> "--day=#{ v }"
-	month: ( v ) -> "--month=#{ v }"
-	year: ( v ) -> "--year=#{ v }"
-	dateFormat: ( v ) -> "--date-format=#{ fix v }"
-	( status, date, cb ) ->
-		cb status, new Date date.toString()
+	text: option 'text'
+	day: option 'day'
+	month: option 'month'
+	year: option 'year'
+	dateFormat: option 'date-format'
+	transform ( date ) -> new Date date.toString()
 
 Zenity.entry = bind 'entry',
-	text: ( v ) -> "--text=#{ fix v }"
-	entryText: ( v ) -> "--entry-text=#{ fix v }"
-	hideText: -> '--hide-text'
+	text: option 'text'
+	entryText: option 'entry-text'
+	hideText: flag 'hide-text'
 	passThrough
 
 Zenity.error = bind 'error',
-	text: ( v ) -> "--text=#{ fix v }"
-	noWrap: -> '--no-wrap'
-	noMarkup: -> '--no-markup'
+	text: option 'text'
+	noWrap: flag 'no-wrap'
+	noMarkup: flag 'no-markup'
 	statusOnly
 
 Zenity.fileSelection = bind 'file-selection',
-	filename: ( v ) -> "--filename=#{ fix v }"
-	multiple: -> '--multiple'
-	directory: -> '--directory'
-	save: -> '--save'
-	separator: ( v ) -> "--separator=#{ fix v }"
-	confirmOverwrite: -> '--confirm-overwrite'
-	fileFilter: ( v ) -> "--file-filter=#{ fix v }"
+	filename: option 'filename'
+	multiple: flag 'multiple'
+	directory: flag 'directory'
+	save: flag 'save'
+	separator: option 'separator'
+	confirmOverwrite: flag 'confirm-overwrite'
+	fileFilter: option 'file-filter'
 	passThrough
 
 Zenity.info = bind 'info',
-	text: ( v ) -> "--text=#{ fix v }"
-	noWrap: -> '--no-wrap'
-	noMarkup: -> '--no-markup'
+	text: option 'text'
+	noWrap: flag 'no-wrap'
+	noMarkup: flag 'no-markup'
 	statusOnly
 
 Zenity.question = bind 'question',
-	text: ( v ) -> "--text=#{ fix v }"
-	noWrap: -> '--no-wrap'
-	noMarkup: -> '--no-markup'
-	okLabel: ( v ) -> "--ok-label=#{ fix v }"
-	cancelLabel: ( v ) -> "--cancel-label=#{ fix v }"
+	text: option 'text'
+	noWrap: flag 'no-wrap'
+	noMarkup: flag 'no-markup'
+	okLabel: option 'ok-label'
+	cancelLabel: option 'cancel-label'
 	statusOnly
 
 Zenity.textInfo = bind 'text-info',
-	filename: ( v ) -> "--filename=#{ fix v }"
-	editable: -> '--editable'
-	checkbox: ( v ) -> "--checkbox=#{ fix v }"
-	okLabel: ( v ) -> "--ok-label=#{ fix v }"
-	cancelLabel: ( v ) -> "--cancel-label=#{ fix v }"
+	filename: option 'filename'
+	editable: flag 'editable'
+	checkbox: option 'checkbox'
+	okLabel: option 'ok-label'
+	cancelLabel: option 'cancel-label'
 	statusOnly
 
 Zenity.warning = bind 'warning',
-	text: ( v ) -> "--text=#{ fix v }"
-	noWrap: -> '--no-wrap'
-	noMarkup: -> '--no-markup'
+	text: option 'text'
+	noWrap: flag 'no-wrap'
+	noMarkup: flag 'no-markup'
 	statusOnly
 
 Zenity.colorSelection = bind 'color-selection',
-	color: ( v ) -> "--color=#{ v }"
-	showPalette: -> '--show-palette'
+	color: option 'color'
+	showPalette: flag 'show-palette'
 	passThrough
 
 Zenity.password = bind 'password',
-	username: -> '--username'
+	username: flag 'username'
 	passThrough
 
 Zenity.scale = bind 'scale',
