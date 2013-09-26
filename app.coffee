@@ -113,11 +113,30 @@ Zenity.password = bind 'password',
 	username: -> '--username'
 	passThrough
 
-# Progress & notification are interactive
+Zenity.scale = bind 'scale',
+	text: ( v ) -> "--text=#{ fix v }"
+	value: ( v ) -> "--value=#{ fix v }"
+	minValue: ( v ) -> "--min-value=#{ fix v }"
+	maxValue: ( v ) -> "--max-value=#{ fix v }"
+	step: ( v ) -> "--step=#{ fix v }"
+	printPartial: -> '--print-partial'
+	hideValue: -> '--hide-value'
+	passThrough
 
-# Zenity.scale = bind 'scale',
+Zenity.forms = bind 'forms',
+	text: ( v ) -> "--text=#{ fix v }"
+	separator: ( v ) -> "--separator=#{ fix v }"
+	dateFormat: ( v ) -> "--forms-date-format=#{ fix v }"
+	entries: ( entries ) ->
+		entries.map(( e ) -> "--add-entry=#{ fix e }")
+			.join ' '
+	passwords: ( entries ) ->
+		entries.map(( e ) -> "--add-password=#{ fix e }")
+			.join ' '
+	calendars: ( entries ) ->
+		entries.map(( e ) -> "--add-calendar=#{ fix e }")
+			.join ' '
 
-# List takes arguments without flags
 # Zenity.list = bind 'list',
 
-# Zenity.forms = bind 'forms',
+# Progress & notification are interactive
