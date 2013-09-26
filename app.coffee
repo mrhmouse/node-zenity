@@ -123,28 +123,29 @@ Zenity.password = bind 'password',
 	passThrough
 
 Zenity.scale = bind 'scale',
-	text: ( v ) -> "--text=#{ fix v }"
-	value: ( v ) -> "--value=#{ fix v }"
-	minValue: ( v ) -> "--min-value=#{ fix v }"
-	maxValue: ( v ) -> "--max-value=#{ fix v }"
-	step: ( v ) -> "--step=#{ fix v }"
-	printPartial: -> '--print-partial'
-	hideValue: -> '--hide-value'
+	text: option 'text'
+	value: option 'value'
+	minValue: option 'min-value'
+	maxValue: option 'max-value'
+	step: option 'step'
+	printPartial: flag 'print-partial'
+	hideValue: flag 'hide-value'
 	passThrough
 
 Zenity.forms = bind 'forms',
-	text: ( v ) -> "--text=#{ fix v }"
-	separator: ( v ) -> "--separator=#{ fix v }"
-	dateFormat: ( v ) -> "--forms-date-format=#{ fix v }"
+	text: option 'text'
+	separator: option 'separator'
+	dateFormat: option 'forms-date-format'
 	entries: ( entries ) ->
-		entries.map(( e ) -> "--add-entry=#{ fix e }")
+		entries.map( option 'add-entry' )
 			.join ' '
 	passwords: ( entries ) ->
-		entries.map(( e ) -> "--add-password=#{ fix e }")
+		entries.map( option 'add-password' )
 			.join ' '
 	calendars: ( entries ) ->
-		entries.map(( e ) -> "--add-calendar=#{ fix e }")
+		entries.map( option 'add-calendar' )
 			.join ' '
+	passThrough
 
 # Zenity.list = bind 'list',
 
